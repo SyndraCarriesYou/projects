@@ -30,7 +30,6 @@ public class ItemHistory extends HttpServlet {
      */
     public ItemHistory() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -46,8 +45,6 @@ public class ItemHistory extends HttpServlet {
 			for (Item item : items) {
 				JSONObject obj = item.toJSONObject();
 				
-				//为完善前端功能
-				//尽量将逻辑放在后端实现 前端只用来显示
 				obj.append("favorite", true);
 				
 				array.put(obj);
@@ -71,17 +68,7 @@ public class ItemHistory extends HttpServlet {
 		try {
 			JSONObject input = RpcHelper.readJsonObject(request);
 			
-			
 			String userId = input.getString("user_id");
-			// MySQLConnection getFullName test
-			// String fullName = conn.getFullname(userId);
-			// MySQLConnection vertifyLogin test
-			//String password = input.getString("password");
-			//if(!conn.verifyLogin(userId, password)) {
-			//	RpcHelper.writeJsonObject(response,
-			//			new JSONObject().put("verifyLogin", "Failed"));
-			//	return; 
-			//}
 			
 			JSONArray array = input.getJSONArray("favorite");
 			List<String> itemIds = new ArrayList<>();
@@ -93,8 +80,6 @@ public class ItemHistory extends HttpServlet {
 			
 			RpcHelper.writeJsonObject(response,
 					new JSONObject().put("result", "SUCCESS"));
-			//RpcHelper.writeJsonObject(response,
-			//		new JSONObject().put(fullName, "SUCCESS"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

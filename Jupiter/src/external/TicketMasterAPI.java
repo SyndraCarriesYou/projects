@@ -16,6 +16,12 @@ import org.json.JSONObject;
 import entity.Item;
 import entity.Item.ItemBuilder;
 
+/**
+ * Use TicketMasterAPI to search nearby events and recommended events
+ * 
+ * @author Wenwen Zheng
+ *
+ */
 public class TicketMasterAPI {
 	private static final String URL = "https://app.ticketmaster.com/discovery/v2/events.json";
 	private static final String DEFAULT_KEYWORD = ""; // no restriction
@@ -39,34 +45,12 @@ public class TicketMasterAPI {
 	private static final String SEGMENT = "segment";
 
 	/**
-	 * Helper methods
+	 * Get the address of the given event
+	 * 
+	 * @param event A JSONObject that represented an event
+	 * @return the address of the given event
+	 * @throws JSONException
 	 */
-
-	// {
-	// "name": "laioffer",
-	// "id": "12345",
-	// "url": "www.laioffer.com",
-	// ...
-	// "_embedded": {
-	// "venues": [
-	// {
-	// "address": {
-	// "line1": "101 First St,",
-	// "line2": "Suite 101",
-	// "line3": "...",
-	// },
-	// "city": {
-	// "name": "San Francisco"
-	// }
-	// ...
-	// },
-	// ...
-	// ]
-	// }
-	// ...
-	// }
-	// check the structure online: https://developer.ticketmaster.com/products-
-	// and-docs/apis/discovery-api/v2/
 	private String getAddress(JSONObject event) throws JSONException {
 		if (!event.isNull(EMBEDDED)) {
 			JSONObject embedded = event.getJSONObject(EMBEDDED);
@@ -74,8 +58,8 @@ public class TicketMasterAPI {
 			if (!embedded.isNull(VENUES)) {
 				JSONArray venues = embedded.getJSONArray(VENUES);
 
-				//take out the first valid address 
-				//use for loop to avoid the first empty address 
+				// take out the first valid address
+				// use for loop to avoid the first empty address
 				for (int i = 0; i < venues.length(); ++i) {
 					JSONObject venue = venues.getJSONObject(i);
 
@@ -117,7 +101,13 @@ public class TicketMasterAPI {
 
 	}
 
-	// {"images": [{"url": "www.example.com/my_image.jpg"}, ...]}
+	/**
+	 * Get the Image URL of the given event
+	 * 
+	 * @param event A JSONObject that represented an event
+	 * @return the Image URL of the given event
+	 * @throws JSONException
+	 */
 	private String getImageUrl(JSONObject event) throws JSONException {
 		if (!event.isNull(IMAGES)) {
 			JSONArray array = event.getJSONArray(IMAGES);
@@ -131,34 +121,42 @@ public class TicketMasterAPI {
 		return "";
 	}
 
-	
-	// {"classifications" : [{"segment": {"name": "music"}}, ...]}
-		private Set<String> getCategories(JSONObject event) throws JSONException {
-			Set<String> categories = new HashSet<>();
+	/**
+	 * Get the categories of the given event
+	 * 
+	 * @param event A JSONObject that represented an event
+	 * @return the categories of the given event
+	 * @throws JSONException
+	 */
+	private Set<String> getCategories(JSONObject event) throws JSONException {
+		Set<String> categories = new HashSet<>();
 
-			if (!event.isNull(CLASSIFICATIONS)) {
-				JSONArray classifications = event.getJSONArray(CLASSIFICATIONS);
-				
-				for (int i = 0; i < classifications.length(); ++i) {
-					JSONObject classification = classifications.getJSONObject(i);
-					
-					if (!classification.isNull(SEGMENT)) {
-						JSONObject segment = classification.getJSONObject(SEGMENT);
-						
-						if (!segment.isNull(NAME)) {
-							categories.add(segment.getString(NAME));
-						}
+		if (!event.isNull(CLASSIFICATIONS)) {
+			JSONArray classifications = event.getJSONArray(CLASSIFICATIONS);
+
+			for (int i = 0; i < classifications.length(); ++i) {
+				JSONObject classification = classifications.getJSONObject(i);
+
+				if (!classification.isNull(SEGMENT)) {
+					JSONObject segment = classification.getJSONObject(SEGMENT);
+
+					if (!segment.isNull(NAME)) {
+						categories.add(segment.getString(NAME));
 					}
 				}
 			}
-
-			return categories;
 		}
 
-	
-
-
-	// Convert JSONArray to a list of item objects.
+		return categories;
+	}
+ 
+	/**
+	 * Convert JSONArray to a list of item objects
+	 * 
+	 * @param events A JSONObject that represented many events
+	 * @return A list of items
+	 * @throws JSONException
+	 */
 	private List<Item> getItemList(JSONArray events) throws JSONException {
 		List<Item> itemList = new ArrayList<>();
 
@@ -167,10 +165,6 @@ public class TicketMasterAPI {
 
 			ItemBuilder builder = new ItemBuilder();
 
-			// check the structure of events from TicketMaster 
-			// the attribute "name" is set to a final constant NAME 
-			// if it is null, we don't have to throw exception since 
-			// thats why we use builder pattern 
 			if (!event.isNull(NAME)) {
 				builder.setName(event.getString(NAME));
 			}
@@ -187,7 +181,6 @@ public class TicketMasterAPI {
 				builder.setDistance(event.getDouble(DISTANCE));
 			}
 
-			// builder.setAddress(this.getAddress(event));
 			builder.setAddress(getAddress(event));
 			builder.setCategories(getCategories(event));
 			builder.setImageUrl(getImageUrl(event));
@@ -197,10 +190,14 @@ public class TicketMasterAPI {
 		return itemList;
 	}
 
-	// format the url
-	// open connection
-	// send request
-	// get response and build JSONArray
+	
+	/**
+	 * Search events with given latitude, longitude and keyword 
+	 * @param lat latitude 
+	 * @param lon longitude 
+	 * @param keyword 
+	 * @return A list of events 
+	 */
 	public List<Item> search(double lat, double lon, String keyword) {
 		// Encode keyword in url since it may contain special characters
 		if (keyword == null) {
@@ -215,17 +212,15 @@ public class TicketMasterAPI {
 		// Convert lat/lon to geo hash
 		String geoHash = GeoHash.encodeGeohash(lat, lon, 8);
 
-		// Make your url query part like:
+		// format the url
 		// "apikey=12345&geoPoint=abcd&keyword=music&radius=50"
 		String query = String.format("apikey=%s&geoPoint=%s&keyword=%s&radius=%s", API_KEY, geoHash, keyword, 50);
 		try {
-			// Open a HTTP connection between your Java application and TicketMaster based
-			// on url
+			// Open a HTTP connection between Java application and TicketMaster based on url
 			HttpURLConnection connection = (HttpURLConnection) new URL(URL + "?" + query).openConnection();
 			// Set request method to GET
 			connection.setRequestMethod("GET");
-			// Send request to TicketMaster and get response, response code could be
-			// returned directly
+			// Send request to TicketMaster and get response, response code could be returned directly
 			// response body is saved in InputStream of connection.
 			int responseCode = connection.getResponseCode();
 			System.out.println("\nSending 'GET' request to URL : " + URL + "?" + query);
@@ -252,9 +247,12 @@ public class TicketMasterAPI {
 
 	}
 
-	/*
+	/**
 	 * add a print function to show JSON array returned from TicketMaster for
 	 * debugging
+	 * 
+	 * @param lat latitude 
+	 * @param lon longitude 
 	 */
 	private void queryAPI(double lat, double lon) {
 		List<Item> itemList = search(lat, lon, null);
@@ -268,6 +266,10 @@ public class TicketMasterAPI {
 		}
 	}
 
+	/**
+	 * Test method 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		TicketMasterAPI tmApi = new TicketMasterAPI();
 		// Mountain View, CA

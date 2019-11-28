@@ -23,50 +23,28 @@ import entity.Item;
 @WebServlet("/recommendation")
 public class RecommendItem extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public RecommendItem() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
-// 		after implementing rpcHelper
-//		response.setContentType("application/json");
-//		PrintWriter out = response.getWriter();
-		
-// before implementing GeoRecommendation
-//		JSONArray array = new JSONArray();
-//		try {
-//			JSONObject a1 = new JSONObject().put("name", "abcd").put
-//					("address", "san francisco").put("time", "01/01/2017");
-//			JSONObject a2 = new JSONObject().put("name", "1234").put
-//					("address", "san jose").put("time", "01/02/2017");	
-//			array.put(a1);
-//			array.put(a2);
-//		}catch(JSONException e){
-//			e.printStackTrace();
-//		}
-		
-		
+	public RecommendItem() {
+		super();
+	}
 
-// 		after implementing rpcHelper
-//		out.print(array);
-//		out.close();
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		String userId = request.getParameter("user_id");
 		double lat = Double.parseDouble(request.getParameter("lat"));
 		double lon = Double.parseDouble(request.getParameter("lon"));
-		
+
 		GeoRecommendation recommendation = new GeoRecommendation();
 		List<Item> items = recommendation.recommendItems(userId, lat, lon);
-		
+
 		JSONArray array = new JSONArray();
 		for (Item item : items) {
 			array.put(item.toJSONObject());
@@ -74,13 +52,14 @@ public class RecommendItem extends HttpServlet {
 
 		RpcHelper.writeJsonArray(response, array);
 
-		
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 
