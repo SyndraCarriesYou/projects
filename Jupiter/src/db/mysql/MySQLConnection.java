@@ -14,27 +14,19 @@ import entity.Item;
 import entity.Item.ItemBuilder;
 import external.TicketMasterAPI;
 
+/**
+ * Concrete MySQL DBconnection implementation.
+ * 
+ * @author Wenwen Zheng
+ *
+ */
 public class MySQLConnection implements DBConnection {
 
 	private Connection conn;
-	// private PreparedStatement saveItemStmt;
 
-//	private PreparedStatement saveItemStmt() {
-//		try {
-//			if (saveItemStmt == null) {
-//				if (conn == null) {
-//					System.err.println("DB Connection Failed!");
-//					return null;
-//				}
-//				saveItemStmt = conn.prepareStatement("INSERT IGNORE INTO items VALUES (?, ?, ?, ?, ?, ?, ?)");
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//		return saveItemStmt;
-//	}
-
+	/**
+	 *  Constructor  
+	 */
 	public MySQLConnection() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -63,7 +55,6 @@ public class MySQLConnection implements DBConnection {
 		}
 		
 		try {
-			// why do need specify the row 
 			String sql = "INSERT IGNORE INTO history (user_id, item_id) VALUES (?, ?)";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, userId);
@@ -138,16 +129,12 @@ public class MySQLConnection implements DBConnection {
 		try {
 			String sql = "SELECT * FROM items WHERE item_id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
+			// Create corresponding item object 
 			for (String itemId : itemIds) {
 				stmt.setString(1, itemId);
-				
-				//需要查询结果出来 所以使用resultset
-				ResultSet rs = stmt.executeQuery();
-				
+				ResultSet rs = stmt.executeQuery();	
 				ItemBuilder builder = new ItemBuilder();
-				
-				// 指针最开始在-1的位置 所以先callnext
-				// 在这个method内可以用if 代替 while 但是一般默认rs return 多个值
+
 				while (rs.next()) {
 					builder.setItemId(rs.getString("item_id"));
 					builder.setName(rs.getString("name"));
@@ -216,27 +203,6 @@ public class MySQLConnection implements DBConnection {
 		}
 
 		try {
-			// to avoid inserting the same item
-			// to avoid invalid input SQL Injection
-
-			// SQL Injection
-			// Example:
-			// SELECT * FROM users WHERE username = '<username>' AND password = '<password>'
-			// version 1
-			// username: aoweifapweofj' OR 1=1 --
-			// password: joaiefjajfaow
-			// ->
-			// SELECT * FROM users WHERE username = 'aoweifapweofj' OR 1=1 --' AND password
-			// = 'joaiefjajfaow'
-			// version 2
-			// username: oiaejofijaw
-			// password: awjeofaiwjefowai' OR '1' = '1
-			// ->
-			// SELECT * FROM users WHERE username = 'oiaejofijaw' AND password =
-			// 'awjeofaiwjefowai' OR '1' = '1'
-
-			// prepareStatement 在复用的时候效率更高
-			// singleton
 			String sql = "INSERT IGNORE INTO items VALUES (?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, item.getItemId());
@@ -263,9 +229,6 @@ public class MySQLConnection implements DBConnection {
 	}
 
 	@Override
-	/**
-	 * has been tested in doPost ItemHistory.java 
-	 */
 	public String getFullname(String userId) {
 		if(conn == null) {
 			System.err.println("DB Connection failed!");
@@ -289,9 +252,6 @@ public class MySQLConnection implements DBConnection {
 	}
 
 	@Override
-	/**
-	 * has been tested in doPost ItemHistory.java 
-	 */
 	public boolean verifyLogin(String userId, String password) {
 		if (conn == null) {
 			return false;

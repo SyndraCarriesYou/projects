@@ -15,9 +15,23 @@ import db.DBConnection;
 import db.DBConnectionFactory;
 import entity.Item;
 
-
-// Recommendation based on geo distance and similar categories.
+/**
+ * Recommendation based on GEO distance and similar categories.
+ * 
+ * @author Wenwen Zheng
+ *
+ */
 public class GeoRecommendation {
+	
+	/**
+	 * Get recommended items based on given user id, latitude and longitude 
+	 * 
+	 * @param userId
+	 * @param lat
+	 * @param lon
+	 * @return a list of recommended items based on user id, latitude and longitude.
+	 * 			return an empty list if there is no recommended items
+	 */
 	public List<Item> recommendItems(String userId, double lat, double lon) {
 		List<Item> recommendedItems = new ArrayList<>();
 		DBConnection conn = DBConnectionFactory.getConnection();
@@ -38,16 +52,12 @@ public class GeoRecommendation {
 			List<Entry<String, Integer>> categoryList = new ArrayList<>(allCategories.entrySet());
 			Collections.sort(categoryList, new Comparator<Entry<String, Integer>>() {
 				@Override
-				public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) {
-					// 与o1 o2顺序有关系 
+				public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) { 
 					return Integer.compare(o2.getValue(), o1.getValue());
-					//o2.getValue() - o1.getValue() 可能会有溢出
 				}
 			});
 			
 			// Step 3 do search based on category, filter out favorite events, sort by distance
-			
-			// set 本身可以防止有重复元素 但是需要item有compare method
 			Set<Item> visitedItems = new HashSet<>();
 			
 			for (Entry<String, Integer> category : categoryList) {
@@ -68,6 +78,8 @@ public class GeoRecommendation {
 					}
 				});
 				
+				// Visited items only record the visited items in this certain search 
+				// it is not a user self-contained record
 				visitedItems.addAll(items);
 				
 				recommendedItems.addAll(filteredItems);

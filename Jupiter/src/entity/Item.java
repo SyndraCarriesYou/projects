@@ -6,6 +6,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Create Item Object using builder pattern 
+ * 
+ * @author Wenwen Zheng
+ *
+ */
 public class Item {
 	private String itemId;
 	private String name;
@@ -16,10 +22,6 @@ public class Item {
 	private String url;
 	private double distance;
 	
-	/**
-	 * This is a builder pattern in Java.
-	 * can be public, but no need since ItemBuilder has to be passed 
-	 */
 	private Item(ItemBuilder builder) {
 		this.itemId = builder.itemId;
 		this.name = builder.name;
@@ -31,27 +33,66 @@ public class Item {
 		this.distance = builder.distance;
 	}
 
+	/**
+	 * Get item ID 
+	 * @return item ID 
+	 */
 	public String getItemId() {
 		return itemId;
 	}
+	
+	/**
+	 * Get item name 
+	 * @return item name
+	 */
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * Get the rating of item
+	 * @return the rating of item
+	 */
 	public double getRating() {
 		return rating;
 	}
+	
+	/**
+	 * Get the address of item 
+	 * @return the address of item
+	 */
 	public String getAddress() {
 		return address;
 	}
+	
+	/**
+	 * Get the categories of item
+	 * @return the categories of item
+	 */
 	public Set<String> getCategories() {
 		return categories;
 	}
+	
+	/**
+	 * Get the image URL of item
+	 * @return the image URL of item
+	 */
 	public String getImageUrl() {
 		return imageUrl;
 	}
+	
+	/**
+	 * Get the URL of item
+	 * @return the URL of item
+	 */
 	public String getUrl() {
 		return url;
 	}
+	
+	/**
+	 * Get the distance of item 
+	 * @return the distance of item 
+	 */
 	public double getDistance() {
 		return distance;
 	}
@@ -65,6 +106,9 @@ public class Item {
 	}
 
 	@Override
+	/**
+	 * If two items have the same item ID, then return true 
+	 */
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -82,10 +126,12 @@ public class Item {
 	}
 
 	
-	/*
-	 * To convert an Item object a JSONObject instance 
-	 * because in our application, frontend code cannot understand Java class, 
+	/**
+	 * To convert an Item object a JSONObject instance.
+	 * Because in our application, frontend code cannot understand Java class, 
 	 * it can only understand JSON.
+	 * 
+	 * @return the corresponding JSON object 
 	 */
 	public JSONObject toJSONObject() {
 		JSONObject obj = new JSONObject();
@@ -105,13 +151,7 @@ public class Item {
 	}
 	
 	/**
-	 * Why is the class static ?
-	 * Has to be static, otherwise we have to have a constructor for ItemBuilder 
-	 * which is not good for our design purpose. And we have to have ItemBuilder first,
-	 * in order to have Item 
-	 * Can we move the class out ?
-	 * Then we cannot access Item directly in this class, Item class cannot access 
-	 * ItemBuilder directly, then we have to have getters of ItemBuilder
+	 * The Builder for Item object 
 	 */
 	public static class ItemBuilder {
 		private String itemId;
@@ -123,38 +163,74 @@ public class Item {
 		private String url;
 		private double distance;
 		
+		/**
+		 * Set item ID 
+		 * @param itemId
+		 */
 		public void setItemId(String itemId) {
 			this.itemId = itemId;
 		}
-
+		
+		/**
+		 * Set item name 
+		 * @param name
+		 */
 		public void setName(String name) {
 			this.name = name;
 		}
 
+		/**
+		 * Set the rating of item 
+		 * @param rating
+		 */
 		public void setRating(double rating) {
 			this.rating = rating;
 		}
 
+		/**
+		 * Set the address of item
+		 * @param address
+		 */
 		public void setAddress(String address) {
 			this.address = address;
 		}
 
+		/**
+		 * Set the categories of item 
+		 * @param categories
+		 */
 		public void setCategories(Set<String> categories) {
 			this.categories = categories;
 		}
 
+		/**
+		 * Set the image URL of item 
+		 * @param imageUrl
+		 */
 		public void setImageUrl(String imageUrl) {
 			this.imageUrl = imageUrl;
 		}
 
+		/**
+		 * Set the URL of item 
+		 * @param url
+		 */
 		public void setUrl(String url) {
 			this.url = url;
 		}
 
+		/**
+		 * Set the distance of item 
+		 * @param distance
+		 */
 		public void setDistance(double distance) {
 			this.distance = distance;
 		}
 		
+		/**
+		 * Create the corresponding item 
+		 * @return the corresponding item 
+		 */
 		public Item build() {
 			return new Item(this);
 		}

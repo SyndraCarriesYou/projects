@@ -6,24 +6,18 @@ import java.sql.Statement;
 import java.sql.Connection;
 
 /**
- * automatically reset tables in database
- * can use mysql create directly 
- * this class is for practice purpose 
- * @author wenwenzheng
+ * Automatically reset tables in database.
+ * This class is for practice purpose.
+ * @author Wenwen Zheng 
  *
  */
 public class MySQLTableCreation {
-	// Run this as Java application to reset db schema.
-	// how to use JDBC to operate db
+
 	public static void main(String[] args) {
 		try {
 			// Step 1 Connect to MySQL.
 			System.out.println("Connecting to " + MySQLDBUtil.URL);
-			// reflection 运行时才创建 注册driver
-			// Class.forName("com.mysql.jdbc.Driver") is fine,
-			// prevent from java version bug
 			Class.forName("com.mysql.jdbc.Driver").getConstructor().newInstance();
-			// 获取刚才注册的driver
 			Connection conn = DriverManager.getConnection(MySQLDBUtil.URL);
 
 			if (conn == null) {
@@ -33,8 +27,6 @@ public class MySQLTableCreation {
 			// Step 2 Drop tables in case they exist.
 			Statement stmt = conn.createStatement();
 			String sql = "DROP TABLE IF EXISTS categories";
-			// why use executeUpdate() not execute()
-			// depends on the return value
 			stmt.executeUpdate(sql);
 
 			sql = "DROP TABLE IF EXISTS history";

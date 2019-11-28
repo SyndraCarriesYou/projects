@@ -5,6 +5,12 @@ import java.util.Set;
 
 import entity.Item;
 
+/**
+ * A database connection for this project has to implement the following methods 
+ * 
+ * @author Wenwen Zheng
+ *
+ */
 public interface DBConnection {
 	/**
 	 * Close the connection.
