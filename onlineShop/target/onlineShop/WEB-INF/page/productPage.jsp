@@ -25,7 +25,7 @@
 				<tbody>
 					<tr>
 						<td>Prodcut Image</td>
-						<td><img src="/products/${product.id}.jpg"
+						<td><img src="/wenwenzheng/products/${product.id}.jpg"
 							width="40%" alt="${product.productName}" /></td>
 					</tr>
 					<tr>

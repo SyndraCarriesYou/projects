@@ -24,12 +24,12 @@
 			<table class="table table-bordered" id="prod">
 				<tbody>
 					<tr>
-						<td>Prodcut Image</td>
+						<td>Product Image</td>
 						<td><img src="/products/${product.id}.jpg"
 							width="40%" alt="${product.productName}" /></td>
 					</tr>
 					<tr>
-						<td>Prodcut ID</td>
+						<td>Product ID</td>
 						<td>${product.id}</td>
 					</tr>
 					<tr>

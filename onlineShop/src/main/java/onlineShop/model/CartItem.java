@@ -34,42 +34,92 @@ public class CartItem implements Serializable {
 	@JsonIgnore
 	private Cart cart;
 
+	
+	/**
+	 * Get the id 
+	 *  
+	 * @return
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * Set the id 
+	 * 
+	 * @param id
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * Get the quantity of the cart items
+	 * @return
+	 */
 	public int getQuantity() {
 		return quantity;
 	}
 
+	/**
+	 * Set the quantity 
+	 * 
+	 * @param quantity
+	 */
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 
+	/**
+	 * Get the price 
+	 * 
+	 * @return
+	 */
 	public double getPrice() {
 		return price;
 	}
 
+	/**
+	 * Set the Price 
+	 * 
+	 * @param price
+	 */
 	public void setPrice(double price) {
 		this.price = price;
 	}
 
+	/**
+	 * Get the price 
+	 * 
+	 * @return
+	 */
 	public Product getProduct() {
 		return product;
 	}
 
+	/**
+	 * Set the price
+	 * 
+	 * @param product
+	 */
 	public void setProduct(Product product) {
 		this.product = product;
 	}
 
+	/**
+	 * Get the cart 
+	 * 
+	 * @return
+	 */
 	public Cart getCart() {
 		return cart;
 	}
 
+	/**
+	 * Set the cart
+	 * 
+	 * @param cart
+	 */
 	public void setCart(Cart cart) {
 		this.cart = cart;
 	}

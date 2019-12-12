@@ -21,26 +21,56 @@ public class Authorities implements Serializable {
 
 	private String authorities;
 
+	/**
+	 * Get the id 
+	 * 
+	 * @return id
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * Set the id to the given id 
+	 *  
+	 * @param id
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * Get the email id 
+	 * 
+	 * @return email id 
+	 */
 	public String getEmailId() {
 		return emailId;
 	}
 
+	/**
+	 * Set the email id to the given email id 
+	 * 
+	 * @param emailId
+	 */
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
 	}
 
+	/**
+	 * Get the authorities
+	 * 
+	 * @return
+	 */
 	public String getAuthorities() {
 		return authorities;
 	}
 
+	/**
+	 * Set the authorities to the given authorities 
+	 * 
+	 * @param authorities
+	 */
 	public void setAuthorities(String authorities) {
 		this.authorities = authorities;
 	}

@@ -27,42 +27,92 @@ public class User implements Serializable {
 	@OneToOne(mappedBy = "user")
 	private Customer customer;
 
+	/**
+	 * Get the id 
+	 * 
+	 * @return
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * Set the id 
+	 * 
+	 * @param id
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * Get the email id 
+	 * 
+	 * @return
+	 */
 	public String getEmailId() {
 		return emailId;
 	}
 
+	/**
+	 * Set the email id 
+	 * 
+	 * @param emailId
+	 */
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
 	}
 
+	/**
+	 * Get the password 
+	 * 
+	 * @return
+	 */
 	public String getPassword() {
 		return password;
 	}
 
+	/**
+	 * Set the password 
+	 * 
+	 * @param password
+	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
+	/**
+	 * check if the user is enabled 
+	 * 
+	 * @return
+	 */
 	public boolean isEnabled() {
 		return enabled;
 	}
 
+	/**
+	 * Set if the user is enabled 
+	 * 
+	 * @param enabled
+	 */
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 
+	/**
+	 * Get the customer 
+	 * 
+	 * @return
+	 */
 	public Customer getCustomer() {
 		return customer;
 	}
 
+	/**
+	 * Set the customer 
+	 * 
+	 * @param customer
+	 */
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}	

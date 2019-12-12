@@ -32,42 +32,92 @@ public class SalesOrder implements Serializable {
 	@OneToOne
 	private BillingAddress billingAddress;
 
+	/**
+	 * Get the id 
+	 * 
+	 * @return
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * Set the id 
+	 * 
+	 * @param id
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * Get the cart 
+	 * 
+	 * @return
+	 */
 	public Cart getCart() {
 		return cart;
 	}
 
+	/**
+	 * Set the cart 
+	 * 
+	 * @param cart
+	 */
 	public void setCart(Cart cart) {
 		this.cart = cart;
 	}
 
+	/**
+	 * Get the customer 
+	 * 
+	 * @return
+	 */
 	public Customer getCustomer() {
 		return customer;
 	}
 
+	/**
+	 * Set the customer 
+	 * 
+	 * @param customer
+	 */
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
 
+	/**
+	 * Get the shipping address 
+	 * 
+	 * @return
+	 */
 	public ShippingAddress getShippingAddress() {
 		return shippingAddress;
 	}
 
+	/**
+	 * Set the shipping address 
+	 * 
+	 * @param shippingAddress
+	 */
 	public void setShippingAddress(ShippingAddress shippingAddress) {
 		this.shippingAddress = shippingAddress;
 	}
 
+	/**
+	 * Get the billing address 
+	 * 
+	 * @return
+	 */
 	public BillingAddress getBillingAddress() {
 		return billingAddress;
 	}
 
+	/**
+	 * Set the billing address 
+	 * 
+	 * @param billingAddress
+	 */
 	public void setBillingAddress(BillingAddress billingAddress) {
 		this.billingAddress = billingAddress;
 	}
